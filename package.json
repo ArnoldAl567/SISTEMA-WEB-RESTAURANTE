@@ -6,8 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:SISTEMA_WEB_RESTAURANTE_FRONT": "node dist/SISTEMA_WEB_RESTAURANTE_FRONT/server/server.mjs"
+    "test": "ng test --karma-config karma.conf.cjs"
   },
   "prettier": {
     "printWidth": 100,
@@ -23,23 +22,26 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "^20.2.14",
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
     "@angular/core": "^20.1.0",
     "@angular/forms": "^20.1.0",
+    "@angular/material": "^20.2.14",
     "@angular/platform-browser": "^20.1.0",
-    "@angular/platform-server": "^20.1.0",
     "@angular/router": "^20.1.0",
-    "@angular/ssr": "^20.1.6",
-    "express": "^5.1.0",
+    "@fontsource/dm-sans": "^5.3.0",
+    "@fontsource/manrope": "^5.3.0",
+    "chart.js": "^4.5.1",
+    "material-symbols": "^0.47.4",
     "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.25",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/build": "^20.1.6",
     "@angular/cli": "^20.1.6",
     "@angular/compiler-cli": "^20.1.0",
-    "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
     "jasmine-core": "~5.8.0",
