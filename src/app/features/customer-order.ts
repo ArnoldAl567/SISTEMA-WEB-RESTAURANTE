@@ -21,11 +21,11 @@ const zones = [
     <div class="customer-page">
       <header class="customer-header">
         <div class="customer-brand"><span class="customer-logo material-symbols-rounded">restaurant</span><span><strong>{{store.settings().name}}</strong><small>El sabor de compartir</small></span></div>
-        <div class="customer-header-actions"><button class="icon-btn theme-toggle" type="button" (click)="theme.toggle()" [attr.aria-label]="theme.theme()==='dark'?'Cambiar a tema claro':'Cambiar a tema oscuro'" [attr.title]="theme.theme()==='dark'?'Tema claro':'Tema oscuro'"><span class="material-symbols-rounded">{{theme.theme()==='dark'?'light_mode':'dark_mode'}}</span></button><a class="customer-cart-link" href="#tu-pedido"><span class="material-symbols-rounded">shopping_bag</span> Tu pedido <b>{{itemCount()}}</b></a></div>
+        <div class="customer-header-actions"><button class="icon-btn theme-toggle" type="button" (click)="theme.toggle()" [attr.aria-label]="theme.theme()==='dark'?'Cambiar a tema claro':'Cambiar a tema oscuro'" [attr.title]="theme.theme()==='dark'?'Tema claro':'Tema oscuro'"><span class="material-symbols-rounded">{{theme.theme()==='dark'?'light_mode':'dark_mode'}}</span></button><button class="customer-cart-link" type="button" (click)="scrollTo('tu-pedido')"><span class="material-symbols-rounded">shopping_bag</span> Tu pedido <b>{{itemCount()}}</b></button></div>
       </header>
       <main class="customer-container">
         <section class="customer-hero">
-          <div><span class="customer-kicker"><span class="material-symbols-rounded">two_wheeler</span> DELIVERY A TU PUERTA</span><h1>Tu antojo favorito,<br><em>directo a casa.</em></h1><p>Explora nuestra carta, elige tus platos y nosotros nos encargamos de llevarlos hasta ti.</p><a href="#carta" class="btn btn-primary">Explorar la carta <span class="material-symbols-rounded">arrow_downward</span></a></div>
+          <div><span class="customer-kicker"><span class="material-symbols-rounded">two_wheeler</span> DELIVERY A TU PUERTA</span><h1>Tu antojo favorito,<br><em>directo a casa.</em></h1><p>Explora nuestra carta, elige tus platos y nosotros nos encargamos de llevarlos hasta ti.</p><button type="button" (click)="scrollTo('carta')" class="btn btn-primary">Explorar la carta <span class="material-symbols-rounded">arrow_downward</span></button></div>
           <div class="hero-art"><span class="hero-art-ring"></span><img src="https://images.pexels.com/photos/28503590/pexels-photo-28503590.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Plato de comida peruana" (error)="fallback($event)"><span class="hero-stamp"><span class="material-symbols-rounded">local_shipping</span> Recién hecho<br>para ti</span></div>
         </section>
         <div class="customer-layout">
@@ -51,6 +51,11 @@ const zones = [
           </aside>
         </div>
       </main>
+      <button class="mobile-cart-bar" type="button" (click)="scrollTo('tu-pedido')" [class.has-items]="itemCount() > 0" [attr.aria-label]="'Ver pedido, '+itemCount()+' productos, total '+money(subtotal())">
+        <span class="mobile-cart-icon"><span class="material-symbols-rounded">shopping_bag</span><b>{{itemCount()}}</b></span>
+        <span><strong>{{itemCount() ? 'Ver mi pedido' : 'Tu pedido está vacío'}}</strong><small>{{itemCount() ? itemCount() + (itemCount() === 1 ? ' producto' : ' productos') : 'Elige algo de la carta'}}</small></span>
+        <span class="mobile-cart-total">{{money(subtotal())}} <span class="material-symbols-rounded">arrow_upward</span></span>
+      </button>
       <footer class="customer-footer"><span>{{store.settings().name}}</span><span>Preparado con cariño, entregado a tu puerta.</span></footer>
     </div>
   `,
@@ -83,6 +88,7 @@ export class CustomerOrderPage {
   add(dish: Dish) { this.cart.update(items => items.some(item => item.dishId === dish.id) ? items.map(item => item.dishId === dish.id ? { ...item, quantity: item.quantity + 1 } : item) : [...items, { dishId: dish.id, name: dish.name, price: dish.price, quantity: 1 }]); toast(`${dish.name} agregado`, 'info'); }
   change(id: number, amount: number) { this.cart.update(items => items.map(item => item.dishId === id ? { ...item, quantity: item.quantity + amount } : item).filter(item => item.quantity > 0)); }
   remove(id: number) { this.cart.update(items => items.filter(item => item.dishId !== id)); }
+  scrollTo(id: string) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
   submit() {
     this.form.markAllAsTouched();
     if (!this.cart().length) { toast('Agrega al menos un plato', 'error'); return; }
